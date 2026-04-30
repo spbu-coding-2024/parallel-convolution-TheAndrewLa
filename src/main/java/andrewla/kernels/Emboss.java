@@ -2,7 +2,7 @@ package andrewla.kernels;
 
 import andrewla.Kernel;
 
-public class Emboss extends AbstractKernel {
+public class Emboss extends BaseKernel {
     public Emboss(int size) {
         super(size);
 
@@ -31,11 +31,6 @@ public class Emboss extends AbstractKernel {
 
     @Override
     public Kernel getExpanded(int newSize) {
-        return null;
-    }
-
-    @Override
-    public Kernel getComposed(Kernel other) {
-        return null;
+        return new Emboss(getSize()).expandWithZeros(newSize);
     }
 }

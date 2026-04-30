@@ -2,7 +2,7 @@ package andrewla.kernels;
 
 import andrewla.Kernel;
 
-public class Identity extends AbstractKernel {
+public class Identity extends BaseKernel {
     public Identity(int size) {
         super(size);
 
@@ -25,10 +25,5 @@ public class Identity extends AbstractKernel {
     @Override
     public Kernel getExpanded(int newSize) {
         return new Identity(newSize);
-    }
-
-    @Override
-    public Kernel getComposed(Kernel other) {
-        return other;
     }
 }

@@ -4,14 +4,15 @@ import andrewla.Kernel;
 
 import java.util.Objects;
 
-public abstract class AbstractKernel implements Kernel {
-    private final int size;
-    private final double[][] data;
+public abstract class BaseKernel implements Kernel {
+    private int size;
+
+    private double[][] data;
 
     private double factor;
     private double bias;
 
-    protected AbstractKernel(int size) {
+    protected BaseKernel(int size) {
         if (size % 2 == 0) {
             throw new IllegalArgumentException("Size of kernel matrix should be odd");
         }
@@ -52,6 +53,20 @@ public abstract class AbstractKernel implements Kernel {
         data[y][x] = value;
     }
 
+    @Override
+    public double getBias() {
+        return bias;
+    }
+
+    protected void setBias(double bias) {
+        this.bias = bias;
+    }
+
+    @Override
+    public double getFactor() {
+        return factor;
+    }
+
     protected void setFactor() {
         var sum = 0.0;
 
@@ -64,15 +79,33 @@ public abstract class AbstractKernel implements Kernel {
         factor = 1 / sum;
     }
 
-    protected void setBias(double bias) {
-        this.bias = bias;
+    protected Kernel expandWithZeros(int newSize) {
+        if (newSize <= this.size) {
+            throw new IllegalArgumentException("New size should be greater than the actual");
+        }
+
+        if (newSize % 2 == 0) {
+            throw new IllegalArgumentException("Size of kernel matrix should be odd");
+        }
+
+        var newData = new double[newSize][newSize];
+        var expansion = newSize - size;
+
+        for (int i = 0; i < size; i++) {
+            System.arraycopy(data[i], 0, newData[i + expansion], expansion, size);
+        }
+
+        this.data = newData;
+        this.size = newSize;
+
+        return this;
     }
 
     @Override
     public boolean equals(Object other) {
         if (other == null || getClass() != other.getClass()) return false;
 
-        AbstractKernel that = (AbstractKernel) other;
+        BaseKernel that = (BaseKernel) other;
         return size == that.size && Double.compare(factor, that.factor) == 0 && Objects.deepEquals(data, that.data);
     }
 }

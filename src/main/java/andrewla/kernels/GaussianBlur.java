@@ -2,7 +2,7 @@ package andrewla.kernels;
 
 import andrewla.Kernel;
 
-public class GaussianBlur extends AbstractKernel {
+public class GaussianBlur extends BaseKernel {
     private final double blurRadius;
 
     public GaussianBlur(int size, double blurRadius) {
@@ -36,11 +36,6 @@ public class GaussianBlur extends AbstractKernel {
 
     @Override
     public Kernel getExpanded(int newSize) {
-        return null;
-    }
-
-    @Override
-    public Kernel getComposed(Kernel other) {
-        return null;
+        return new GaussianBlur(getSize(), blurRadius).expandWithZeros(newSize);
     }
 }

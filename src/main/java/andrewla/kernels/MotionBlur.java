@@ -2,7 +2,7 @@ package andrewla.kernels;
 
 import andrewla.Kernel;
 
-public class MotionBlur extends AbstractKernel {
+public class MotionBlur extends BaseKernel {
     private final double angle;
 
     public MotionBlur(int size, double angle) {
@@ -35,11 +35,6 @@ public class MotionBlur extends AbstractKernel {
 
     @Override
     public Kernel getExpanded(int newSize) {
-        return null;
-    }
-
-    @Override
-    public Kernel getComposed(Kernel other) {
-        return null;
+        return new MotionBlur(newSize, angle).expandWithZeros(newSize);
     }
 }

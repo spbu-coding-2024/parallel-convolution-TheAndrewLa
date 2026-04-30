@@ -2,7 +2,7 @@ package andrewla.kernels;
 
 import andrewla.Kernel;
 
-public class Sharpen extends AbstractKernel{
+public class Sharpen extends BaseKernel {
     public Sharpen(int size) {
         super(size);
 
@@ -46,11 +46,6 @@ public class Sharpen extends AbstractKernel{
 
     @Override
     public Kernel getExpanded(int newSize) {
-        return null;
-    }
-
-    @Override
-    public Kernel getComposed(Kernel other) {
-        return null;
+        return new Sharpen(getSize()).expandWithZeros(newSize);
     }
 }
