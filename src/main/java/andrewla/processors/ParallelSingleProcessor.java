@@ -4,9 +4,7 @@ import andrewla.Kernel;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,64 +57,43 @@ public class ParallelSingleProcessor extends BaseSingleProcessor {
     }
 
     private void rows(BufferedImage src, BufferedImage out, int w, int h, Kernel kernel) {
-        final var threads = ((java.util.concurrent.ThreadPoolExecutor) executor).getMaximumPoolSize();
-        final var chunkSize = (h + threads - 1) / threads;
-
-        List<Callable<Void>> tasks = new ArrayList<>();
-
-        for (int startY = 0; startY < h; startY += chunkSize) {
-            final var from = startY;
-            final var to = Math.min(startY + chunkSize, h);
-
-            tasks.add(() -> {
-                for (int y = from; y < to; y++) {
-                    for (int x = 0; x < w; x++) {
-                        processPixel(src, out, x, y, kernel);
-                    }
+        for (int y = 0; y < h; y++) {
+            final var finalY = y;
+            executor.submit(() -> {
+                for (int x = 0; x < w; x++) {
+                    processPixel(src, out, x, finalY, kernel);
                 }
-                return null;
             });
         }
-        invokeAndWait(tasks);
+
+        executor.shutdown();
     }
 
     private void columns(BufferedImage src, BufferedImage out, int w, int h, Kernel kernel) {
-        final var threads = ((java.util.concurrent.ThreadPoolExecutor) executor).getMaximumPoolSize();
-        final var chunkSize = (w + threads - 1) / threads;
-
-        List<Callable<Void>> tasks = new ArrayList<>();
-
-        for (int startX = 0; startX < w; startX += chunkSize) {
-            final var from = startX;
-            final var to = Math.min(startX + chunkSize, w);
-
-            tasks.add(() -> {
+        for (int x = 0; x < w; x++) {
+            final var finalX = x;
+            executor.submit(() -> {
                 for (int y = 0; y < h; y++) {
-                    for (int x = from; x < to; x++) {
-                        processPixel(src, out, x, y, kernel);
-                    }
+                    processPixel(src, out, finalX, y, kernel);
                 }
-                return null;
             });
         }
 
-        invokeAndWait(tasks);
+        executor.shutdown();
     }
 
     private void pixels(BufferedImage src, BufferedImage out, int w, int h, Kernel kernel) {
-        List<Callable<Void>> tasks = new ArrayList<>(w * h);
-
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                final int fx = x, fy = y;
-                tasks.add(() -> {
-                    processPixel(src, out, fx, fy, kernel);
-                    return null;
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                final var finalX = x;
+                final var finalY = y;
+                executor.submit(() -> {
+                    processPixel(src, out, finalX, finalY, kernel);
                 });
             }
         }
 
-        invokeAndWait(tasks);
+        executor.shutdown();
     }
 
     private void processPixel(BufferedImage src, BufferedImage out, int x, int y, Kernel kernel) {
@@ -161,15 +138,6 @@ public class ParallelSingleProcessor extends BaseSingleProcessor {
         pixel |= nb;
 
         out.setRGB(x, y, pixel);
-    }
-
-    private void invokeAndWait(List<Callable<Void>> tasks) {
-        try {
-            executor.invokeAll(tasks);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Parallel execution interrupted", e);
-        }
     }
 
     public enum ParallelPolicy {
