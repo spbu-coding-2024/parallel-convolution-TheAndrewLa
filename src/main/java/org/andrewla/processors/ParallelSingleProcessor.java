@@ -1,6 +1,6 @@
-package org.andrewla.processors;
+package andrewla.processors;
 
-import org.andrewla.Kernel;
+import andrewla.Kernel;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
