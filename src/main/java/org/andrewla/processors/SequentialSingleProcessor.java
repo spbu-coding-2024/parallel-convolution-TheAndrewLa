@@ -1,34 +1,10 @@
-package andrewla.processors;
+package org.andrewla.processors;
 
-import andrewla.Kernel;
-
-import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SequentialSingleProcessor extends BaseSingleProcessor {
-    private final List<Kernel> kernels = new LinkedList<>();
-    private ImageReader reader = null;
-
-    private static BufferedImage copyImage(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaMultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaMultiplied, null);
-    }
-
-    private static int clamp(int v, int lo, int hi) {
-        return Math.min(hi, Math.max(lo, v));
-    }
-
-    private static int clampPixel(int v) {
-        return clamp(v, 0, 255);
-    }
-
     @Override
     public List<BufferedImage> applyFilters() {
         BufferedImage src;
@@ -46,6 +22,7 @@ public class SequentialSingleProcessor extends BaseSingleProcessor {
 
         for (var k : kernels) {
             final var kSize = k.getSize();
+            final var kCenter = kSize / 2;
 
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
@@ -63,7 +40,7 @@ public class SequentialSingleProcessor extends BaseSingleProcessor {
                             final var green = (rgb >> 8) & 0xFF;
                             final var blue = rgb & 0xFF;
 
-                            final var value = k.getValue(kx + kSize, ky + kSize);
+                            final var value = k.getValue(kx - kCenter, ky - kCenter);
 
                             r += red * value;
                             g += green * value;
@@ -89,9 +66,6 @@ public class SequentialSingleProcessor extends BaseSingleProcessor {
             }
         }
 
-        final var result = new LinkedList<BufferedImage>();
-        result.add(out);
-
-        return result;
+        return List.of(out);
     }
 }

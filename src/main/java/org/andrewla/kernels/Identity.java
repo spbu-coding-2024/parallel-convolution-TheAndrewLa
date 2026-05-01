@@ -1,8 +1,8 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
-public class Identity extends BaseKernel {
+public class Identity extends AbstractKernel {
     public Identity(int size) {
         super(size);
 

@@ -1,12 +1,10 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
-public class Emboss extends BaseKernel {
+public class Emboss extends AbstractKernel {
     public Emboss(int size) {
         super(size);
-
-        var center = size / 2;
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j <= i; j++) {

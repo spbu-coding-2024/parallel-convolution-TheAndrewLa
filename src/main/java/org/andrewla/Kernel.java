@@ -1,4 +1,4 @@
-package andrewla;
+package org.andrewla;
 
 public interface Kernel {
     int getSize();

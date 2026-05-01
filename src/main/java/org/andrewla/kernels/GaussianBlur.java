@@ -1,8 +1,8 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
-public class GaussianBlur extends BaseKernel {
+public class GaussianBlur extends AbstractKernel {
     private final double blurRadius;
 
     public GaussianBlur(int size, double blurRadius) {
