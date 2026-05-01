@@ -1,4 +1,4 @@
-package andrewla;
+package org.andrewla;
 
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;

@@ -1,7 +1,7 @@
-package andrewla.processors;
+package org.andrewla.processors;
 
-import andrewla.ImageProcessor;
-import andrewla.Kernel;
+import org.andrewla.ImageProcessor;
+import org.andrewla.Kernel;
 
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;

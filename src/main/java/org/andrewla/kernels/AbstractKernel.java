@@ -1,10 +1,10 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
 import java.util.Objects;
 
-public abstract class BaseKernel implements Kernel {
+public abstract class AbstractKernel implements Kernel {
     private int size;
 
     private double[][] data;
@@ -12,7 +12,7 @@ public abstract class BaseKernel implements Kernel {
     private double factor;
     private double bias;
 
-    protected BaseKernel(int size) {
+    protected AbstractKernel(int size) {
         if (size % 2 == 0) {
             throw new IllegalArgumentException("Size of kernel matrix should be odd");
         }
@@ -81,7 +81,7 @@ public abstract class BaseKernel implements Kernel {
 
     protected Kernel expandWithZeros(int newSize) {
         if (newSize <= this.size) {
-            throw new IllegalArgumentException("New size should be greater than the actual");
+            return this;
         }
 
         if (newSize % 2 == 0) {
@@ -105,7 +105,7 @@ public abstract class BaseKernel implements Kernel {
     public boolean equals(Object other) {
         if (other == null || getClass() != other.getClass()) return false;
 
-        BaseKernel that = (BaseKernel) other;
+        AbstractKernel that = (AbstractKernel) other;
         return size == that.size && Double.compare(factor, that.factor) == 0 && Objects.deepEquals(data, that.data);
     }
 }

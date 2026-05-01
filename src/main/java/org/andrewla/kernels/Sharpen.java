@@ -1,8 +1,8 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
-public class Sharpen extends BaseKernel {
+public class Sharpen extends AbstractKernel {
     public Sharpen(int size) {
         super(size);
 

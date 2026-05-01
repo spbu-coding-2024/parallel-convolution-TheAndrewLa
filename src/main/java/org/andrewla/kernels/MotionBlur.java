@@ -1,8 +1,8 @@
-package andrewla.kernels;
+package org.andrewla.kernels;
 
-import andrewla.Kernel;
+import org.andrewla.Kernel;
 
-public class MotionBlur extends BaseKernel {
+public class MotionBlur extends AbstractKernel {
     private final double angle;
 
     public MotionBlur(int size, double angle) {
