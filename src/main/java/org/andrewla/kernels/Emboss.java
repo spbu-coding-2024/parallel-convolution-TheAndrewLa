@@ -8,13 +8,13 @@ public class Emboss extends AbstractKernel {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j <= i; j++) {
-                setValue(i, j, -1);
+                setValue(j, i, -1);
             }
 
-            setValue(i, size - 1 - i, 0);
+            setValue(size - 1 - i, i, 0);
 
             for (int j = i + 1; j < size; j++) {
-                setValue(i, j, 1);
+                setValue(j, i, 1);
             }
         }
 
