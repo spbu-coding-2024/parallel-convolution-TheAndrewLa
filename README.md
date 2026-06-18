@@ -18,7 +18,8 @@ groups of pixels simultaneously using different strategies:
 
 Maximum number of working threads is limited
 
-Code with benchmark is [here](./src/main/java/Bench1.java) 
+Code with benchmark is [here](./src/main/java/Bench1.java)
+(`Bench1.java`)
 
 ![Small bench example](./assets/bench_small.png)
 
@@ -27,3 +28,11 @@ Code with benchmark is [here](./src/main/java/Bench1.java)
 ![Large bench example](./assets/bench_large.png)
 
 ### Stream of images
+
+Comparing different implementation of applying on filter
+on many images
+
+Code with benchmark is [here](src/main/java/Bench2.java)
+(`Bench2.java`)
+
+![Stream bench](assets/bench_stream.png)
