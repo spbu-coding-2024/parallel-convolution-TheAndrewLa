@@ -18,7 +18,7 @@ public class ImageStreamSequential extends ImageStream {
         }
 
         try {
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < filesCount; i++) {
                 final var inputImg = mgr.readImage(inputFiles.get(i));
                 final var outputImg = mgr.copyImage(inputImg);
                 processor.process(inputImg, outputImg);

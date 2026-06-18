@@ -8,8 +8,7 @@ public abstract class ImageStream {
     protected final ArrayList<Path> outputFiles = new ArrayList<>();
     protected final ImageManager mgr;
     protected final ImageProcessor processor;
-
-    protected int count = 0;
+    protected int filesCount = 0;
 
     protected ImageStream(ImageProcessor processor, ImageManager mgr) {
         this.mgr = mgr;
@@ -17,7 +16,7 @@ public abstract class ImageStream {
     }
 
     public void addPaths(Path input, Path output) {
-        count++;
+        filesCount++;
         inputFiles.add(input);
         outputFiles.add(output);
     }
