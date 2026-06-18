@@ -132,32 +132,18 @@ public class Bench1 {
         public float parallelColumnsTime;
         public float parallelRectangleTime;
 
-        public int update(PerformanceResult other, int iteration) {
-            assert iteration >= 0;
+        public int update(PerformanceResult other, int i) {
+            assert i >= 0;
 
             // newTime = (oldTime * count + time) / (count + 1)
 
-            sequentialTime *= iteration;
-            sequentialTime += other.sequentialTime;
-            sequentialTime /= (iteration + 1);
+            sequentialTime = (sequentialTime * i + other.sequentialTime) / (i + 1);
+            parallelPixelsTime = (parallelPixelsTime * i + other.parallelPixelsTime) / (i + 1);
+            parallelRowsTime = (parallelRowsTime * i + other.parallelRowsTime) / (i + 1);
+            parallelColumnsTime = (parallelColumnsTime * i + other.parallelColumnsTime) / (i + 1);
+            parallelRectangleTime = (parallelRectangleTime * i + other.parallelRectangleTime) / (i + 1);
 
-            parallelPixelsTime *= iteration;
-            parallelPixelsTime += other.parallelPixelsTime;
-            parallelPixelsTime /= (iteration + 1);
-
-            parallelRowsTime *= iteration;
-            parallelRowsTime += other.parallelRowsTime;
-            parallelRowsTime /= (iteration + 1);
-
-            parallelColumnsTime *= iteration;
-            parallelColumnsTime += other.parallelColumnsTime;
-            parallelColumnsTime /= (iteration + 1);
-
-            parallelRectangleTime *= iteration;
-            parallelRectangleTime += other.parallelRectangleTime;
-            parallelRectangleTime /= (iteration + 1);
-
-            return iteration + 1;
+            return i + 1;
         }
     }
 }

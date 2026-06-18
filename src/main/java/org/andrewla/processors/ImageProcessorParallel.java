@@ -1,9 +1,9 @@
 package org.andrewla.processors;
 
+import org.andrewla.Image;
 import org.andrewla.ImageManager;
 import org.andrewla.ImageProcessor;
 import org.andrewla.Kernel;
-import org.andrewla.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +65,19 @@ public final class ImageProcessorParallel extends ImageProcessor implements Auto
 
     public ImageProcessorParallel(ImageManager mgr, BorderPolicy borderPolicy, int rectWidth, int rectHeight, int nThreads) {
         this(mgr, borderPolicy, RECTANGLE, nThreads, rectWidth, rectHeight);
+    }
+
+    private static void waitTasks(List<Future<?>> futures) {
+        for (final var future : futures) {
+            try {
+                future.get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -174,19 +187,6 @@ public final class ImageProcessorParallel extends ImageProcessor implements Auto
         }
 
         waitTasks(futures);
-    }
-
-    private void waitTasks(List<Future<?>> futures) {
-        for (final var future : futures) {
-            try {
-                future.get();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     @Override
